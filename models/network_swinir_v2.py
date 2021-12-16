@@ -114,15 +114,15 @@ class WindowAttention(nn.Module):
         self.theta=torch.nn.parameter.Parameter(torch.rand(size=(1,self.num_heads,1,1),dtype=torch.float))
         #meta network-small MLP for learn continous relative bias-swin transformer V2
         self.meta_network=small_Mlp(2)
-        #Log-spaced coordinates-swin transformer V2
         x_coors_relative_table=torch.tensor(np.arange(2*window_size[0]-1),dtype=torch.float)-window_size[0]+1
         y_coors_relative_table=torch.tensor(np.arange(2*window_size[1]-1),dtype=torch.float)-window_size[1]+1
         x_coors_relative_table=torch.sign(x_coors_relative_table)*torch.log(torch.sign(x_coors_relative_table)*x_coors_relative_table+1)
         y_coors_relative_table=torch.sign(y_coors_relative_table)*torch.log(torch.sign(y_coors_relative_table)*y_coors_relative_table+1)
-        x_coors_relative_table,y_coors_relative_table=torch.meshgrid(x_coors_relative_table,y_coors_relative_table)
-        x_coors_relative_table,y_coors_relative_table=x_coors_relative_table.flatten().unsqueeze(0),x_coors_relative_table.flatten().unsqueeze(0)
-        linear_spaced_index=torch.cat([x_coors_relative_table,y_coors_relative_table],axis=0)
-        linear_spaced_index=torch.transpose(linear_spaced_index,1,0)
+        linear_spaced_index=[]
+        for item in x_coors_relative_table:
+            for item1 in y_coors_relative_table:
+                linear_spaced_index.append([item,item1])
+        linear_spaced_index=torch.tensor(linear_spaced_index)
         self.register_buffer("linear_spaced_index", linear_spaced_index)
         ##################end#######################
 
