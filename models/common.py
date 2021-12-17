@@ -7,9 +7,9 @@ from models.swin_transformer import SwinTransformerBlock
 from torch.autograd import Variable
 
 def default_conv(in_channels, out_channels, kernel_size, bias=True, dilation=1):
-    return nn.Conv2d(
-            in_channels, out_channels, kernel_size,
-            padding=(kernel_size//2)+dilation-1, bias=bias, dilation=dilation)
+    #return nn.Conv2d(
+    #        in_channels, out_channels, kernel_size,
+    #        padding=(kernel_size//2)+dilation-1, bias=bias, dilation=dilation)
     if(in_channels==3 or out_channels==3):
         return nn.Conv2d(
             in_channels, out_channels, kernel_size,
